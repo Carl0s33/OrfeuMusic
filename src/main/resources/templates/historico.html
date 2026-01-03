@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::#conteudo-historico}, 'Histórico - Orfeu Music')}">
+
+<body>
+<div id="conteudo-historico">
+
+                            <div class="cabecalho-secao">
+        <h2>Histórico de Edições</h2>
+    </div>
+
+    <!-- Barra de Ferramentas -->
+    <div class="toolbar">
+        <div class="filter-group">
+            <select class="filter-select">
+                <option>Todos os Tipos</option>
+                <option>Criações</option>
+                <option>Edições</option>
+                <option>Aprovações</option>
+                <option>Rejeições</option>
+            </select>
+            <select class="filter-select">
+                <option>Todas as Entidades</option>
+                <option>Artistas</option>
+                <option>Lançamentos</option>
+                <option>Selos</option>
+                <option>Faixas</option>
+                <option>Gêneros</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Lista de Histórico -->
+    <div class="secao-lista-dados">
+        <div class="lista-dados">
+            <!-- Exemplo de item de histórico -->
+            <div class="item-lista">
+                <div class="principal-item-lista">
+                    <div class="info-item-lista">
+                        <p class="titulo-item-lista">Aprovação: João Gilberto</p>
+                        <p class="meta-item-lista">
+                            <span>Maria Silva (Editor)</span>
+                            <span>•</span>
+                            <span>11/12/2025 às 14:35</span>
+                        </p>
+                        <p class="descricao-item-lista">
+                            Artista aprovado e publicado no catálogo.
+                        </p>
+                    </div>
+                </div>
+                <div class="acoes-item-lista">
+                    <span class="tag">artista</span>
+                </div>
+            </div>
+            <!-- Fim do exemplo -->
+        </div>
+    </div>
+
+</div>
+</body>
+
+</html>

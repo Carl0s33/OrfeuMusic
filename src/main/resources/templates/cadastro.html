@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::#conteudo-cadastro}, 'Cadastro - Orfeu Music')}">
+
+<body>
+<div id="conteudo-cadastro">
+
+    <div class="cabecalho-secao">
+        <h2>Criar conta</h2>
+    </div>
+
+    <div class="pagina-autenticacao">
+        <div class="cartao-autenticacao">
+            <div class="cabecalho-cartao-autenticacao">
+                <h3 class="titulo-autenticacao">Bem-vindo ao Orfeu Music</h3>
+                <p class="subtitulo-autenticacao">Crie sua conta para participar da construção do catálogo.</p>
+            </div>
+
+            <form id="cadastroForm" class="formulario-autenticacao">
+                <div id="cadastroError" class="alert alert-danger" style="display: none; color: #ff4444; margin-bottom: 1rem;"></div>
+                <div id="cadastroSuccess" class="alert alert-success" style="display: none; color: #44ff44; margin-bottom: 1rem;"></div>
+
+                <div class="grupo-form" style="display: flex; justify-content: center; margin-bottom: 1.5rem;">
+                    <div class="upload-avatar-container" style="position: relative; width: 100px; height: 100px; cursor: pointer;">
+                        <input type="file" id="fileInput" accept="image/*" style="display: none;" />
+                        <div id="avatarPreview" style="width: 100%; height: 100%; border-radius: 50%; background-color: var(--bg-tertiary); border: 2px dashed var(--border-color); display: flex; align-items: center; justify-content: center; overflow: hidden; transition: all 0.2s ease;">
+                            <span id="avatarPlaceholder" style="font-size: 2rem; color: var(--text-secondary);">📷</span>
+                            <img id="avatarImage" src="" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover; display: none;" />
+                        </div>
+                        <div style="position: absolute; bottom: 0; right: 0; background: var(--accent-primary); width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1rem; border: 2px solid var(--bg-secondary);">+</div>
+                    </div>
+                    <input type="hidden" id="fotoUrl" name="fotoUrl" />
+                </div>
+
+                <div class="grupo-form">
+                    <label for="nome">Nome</label>
+                    <input id="nome" name="nome" type="text" autocomplete="name" required class="input-form" />
+                </div>
+
+                <div class="grupo-form">
+                    <label for="email">E-mail</label>
+                    <input id="email" name="email" type="email" autocomplete="email" required class="input-form" />
+                </div>
+
+
+                <div class="grupo-form">
+                    <label for="senha">Senha</label>
+                    <div style="position: relative;">
+                        <input id="senha" name="senha" type="password" autocomplete="new-password" required class="input-form" style="padding-right: 2.5rem;" />
+                        <button type="button" id="toggleSenha" style="position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: var(--text-secondary);">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="pilha-auth">
+                    <label class="checkbox-autenticacao">
+                        <input type="checkbox" id="colaborador" name="colaborador" />
+                        <span>Quero ser colaborador</span>
+                    </label>
+                    <label class="checkbox-autenticacao">
+                        <input type="checkbox" id="editor" name="editor" />
+                        <span>Quero solicitar perfil de editor</span>
+                    </label>
+                    <div class="ajuda-auth">Se não marcar nada, você será visitante. Editores revisam contribuições antes de irem ao catálogo.</div>
+                </div>
+
+                <div class="acoes-form">
+                    <button type="submit" class="botao-primario botao-enviar-autenticacao">Criar conta</button>
+                </div>
+            </form>
+
+            <script>
+                const fileInput = document.getElementById('fileInput');
+                const avatarPreview = document.getElementById('avatarPreview');
+                const avatarImage = document.getElementById('avatarImage');
+                const avatarPlaceholder = document.getElementById('avatarPlaceholder');
+                const fotoUrlInput = document.getElementById('fotoUrl');
+                const uploadContainer = document.querySelector('.upload-avatar-container');
+
+                uploadContainer.addEventListener('click', () => fileInput.click());
+
+                fileInput.addEventListener('change', function() {
+                    const file = this.files[0];
+                    if (file) {
+                        // Preview
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            avatarImage.src = e.target.result;
+                            avatarImage.style.display = 'block';
+                            avatarPlaceholder.style.display = 'none';
+                        }
+                        reader.readAsDataURL(file);
+
+                        // Upload
+                        const formData = new FormData();
+                        formData.append('file', file);
+
+                        fetch('/api/upload/avatar', {
+                            method: 'POST',
+                            body: formData
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.url) {
+                                fotoUrlInput.value = data.url;
+                            } else {
+                                alert('Erro ao fazer upload da imagem');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Erro:', error);
+                            alert('Erro ao fazer upload da imagem');
+                        });
+                    }
+                });
+
+                const toggleSenha = document.getElementById('toggleSenha');
+                const senhaInput = document.getElementById('senha');
+
+                toggleSenha.addEventListener('click', function() {
+                    const type = senhaInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                    senhaInput.setAttribute('type', type);
+
+                    if (type === 'text') {
+                        this.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye-off"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>';
+                    } else {
+                        this.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>';
+                    }
+                });
+
+                document.getElementById('cadastroForm').addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const nome = document.getElementById('nome').value;
+                    const email = document.getElementById('email').value;
+                    const fotoUrl = document.getElementById('fotoUrl').value;
+                    const senha = document.getElementById('senha').value;
+                    const colaborador = document.getElementById('colaborador').checked;
+                    const editor = document.getElementById('editor').checked;
+                    
+                    const errorDiv = document.getElementById('cadastroError');
+                    const successDiv = document.getElementById('cadastroSuccess');
+                    
+                    errorDiv.style.display = 'none';
+                    successDiv.style.display = 'none';
+                    
+                    fetch('/api/auth/register', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ nome, email, fotoUrl, senha, colaborador, editor })
+                    })
+                    .then(response => {
+                        return response.json().then(data => {
+                            if (response.ok) {
+                                return data;
+                            } else {
+                                throw new Error(data.message || 'Erro ao realizar cadastro');
+                            }
+                        });
+                    })
+                    .then(data => {
+                        successDiv.textContent = data.message + ' Redirecionando para o login...';
+                        successDiv.style.display = 'block';
+                        setTimeout(() => {
+                            window.location.href = '/login';
+                        }, 2000);
+                    })
+                    .catch(error => {
+                        errorDiv.textContent = error.message;
+                        errorDiv.style.display = 'block';
+                    });
+                });
+            </script>
+
+            <div class="rodape-autenticacao">
+                <div>Colaboradores podem enviar contribuições para revisão de Editores.</div>
+                <div>Visitantes podem navegar e pesquisar o catálogo sem participar das edições.</div>
+                <div class="divisor-autenticacao"></div>
+                <div>Já tem conta? <a th:href="@{/login}" class="link-autenticacao">Entrar</a></div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+
+</html>

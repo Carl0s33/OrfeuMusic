@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::#conteudo-lancamentos}, 'Lançamentos - Orfeu Music')}">
+
+<body>
+<div id="conteudo-lancamentos">
+
+    <div class="cabecalho-secao">
+        <h2>Álbuns</h2>
+    </div>
+
+
+    <!-- Grid de Lançamentos -->
+    <div th:if="${#lists.isEmpty(lancamentos)}" style="color: var(--text-secondary); margin-top: 1rem;">
+        Nenhum álbum encontrado.
+    </div>
+
+    <div class="grade-mais-vendidos" th:unless="${#lists.isEmpty(lancamentos)}">
+        <div th:each="album : ${lancamentos}" class="cartao-album">
+            <div class="capa-album" style="position: relative; overflow: hidden;">
+                <img th:if="${album.capaUrl}" th:src="${album.capaUrl}" th:alt="${album.titulo}" style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0;">
+                <div th:unless="${album.capaUrl}" style="width: 100%; height: 100%; background-color: var(--bg-tertiary); display: flex; align-items: center; justify-content: center; color: var(--text-secondary);">
+                    <span>💿</span>
+                </div>
+            </div>
+            <div class="info-album">
+                <p class="titulo-album" th:text="${album.titulo}">Título</p>
+                <p class="artista-album" th:text="${album.artista.nome}">Artista</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::#conteudo-artistas}, 'Artistas - Orfeu Music')}">
+
+<body>
+<div id="conteudo-artistas">
+
+    <div class="cabecalho-secao">
+        <h2>Artistas</h2>
+    </div>
+
+    <!-- Grid de Artistas (Estilo Discogs) -->
+    <div class="grid-discogs">
+        <div th:each="a : ${artistas}" class="item-discogs artista-circular">
+            <div class="capa-item">
+                <img th:src="${a.fotoUrl != null ? a.fotoUrl : 'https://images.unsplash.com/photo-1520529277867-dbf8c5e0b340?auto=format&fit=crop&w=300&q=80'}" th:alt="${a.nome}">
+            </div>
+            <div class="info-item text-center">
+                <a href="#" class="titulo-item" th:text="${a.nome}">Nome do Artista</a>
+            </div>
+        </div>
+        <div class="mensagem-lista-vazia" th:if="${#lists.isEmpty(artistas)}">
+            <p>Nenhum artista cadastrado.</p>
+        </div>
+    </div>
+
+</div>
+</body>
+
+</html>

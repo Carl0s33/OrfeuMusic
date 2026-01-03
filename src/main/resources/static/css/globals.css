@@ -1,0 +1,856 @@
+/* Reset & Base */
+:root {
+  --bg-primary: #0a0a0a;
+  --bg-secondary: #171717;
+  --bg-tertiary: #262626;
+  --text-primary: #ffffff;
+  --text-secondary: #a3a3a3;
+  --accent-primary: #f59e0b; /* Amber/Gold */
+  --accent-secondary: #d97706;
+  --accent-gradient: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  --border-color: #404040;
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-full: 9999px;
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+#container-app {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+/* Header */
+.cabecalho-principal {
+  background-color: rgba(10, 10, 10, 0.8);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.conteudo-cabecalho {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 80px;
+}
+
+.link-logo {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.imagem-logo {
+  height: 90px;
+  width: auto;
+}
+
+.texto-logo {
+  font-size: 40px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.barra-busca {
+  flex: 1;
+  max-width: 600px;
+  margin: 0 2rem;
+  position: relative;
+}
+
+.input-busca {
+  width: 100%;
+  padding: 0.75rem 1.25rem;
+  padding-right: 3rem;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-full);
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+}
+
+.input-busca:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+  background-color: var(--bg-tertiary);
+  box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.2);
+}
+
+.botao-busca {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.botao-busca:hover {
+  color: var(--text-primary);
+}
+
+.acoes-usuario {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.botao-primario {
+  background: var(--accent-gradient);
+  color: #fff;
+  padding: 0.6rem 1.5rem;
+  border-radius: var(--radius-full);
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.botao-primario:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+}
+
+.link-nav {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  padding: 0.5rem 0;
+  position: relative;
+}
+
+.link-nav:hover, .link-nav.active {
+  color: var(--text-primary);
+}
+
+.link-nav.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--accent-gradient);
+  border-radius: 2px;
+}
+
+/* Main Navigation */
+.nav-principal {
+  background-color: transparent;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 2rem;
+}
+
+.lista-nav {
+  display: flex;
+  list-style: none;
+  gap: 2rem;
+  padding: 1rem 0;
+  overflow-x: auto;
+}
+
+/* Main Content */
+.conteudo-principal {
+  padding-bottom: 4rem;
+}
+
+/* Hero Section */
+.secao-destaque {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1.5rem;
+  height: 400px;
+  margin-bottom: 3rem;
+}
+
+/* Seção Explorar Estilo Discogs */
+.secao-explorar {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  gap: 4rem; /* Espaço entre os blocos (Álbuns, Artistas, etc) */
+}
+
+.bloco-explorar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.titulo-secao-explorar {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  border-left: 4px solid var(--accent-primary);
+  padding-left: 1rem;
+}
+
+/* Grid Discogs */
+.grid-discogs {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 2rem;
+}
+
+.item-discogs {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.capa-item {
+  aspect-ratio: 1 / 1;
+  background-color: var(--bg-secondary);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  transition: transform 0.2s ease;
+}
+
+.capa-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.item-discogs:hover .capa-item {
+  transform: scale(1.02);
+}
+
+.item-discogs:hover .titulo-item {
+  color: var(--accent-primary);
+  text-decoration: underline;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.titulo-item {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.subtitulo-item {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+/* Artistas Circulares */
+.artista-circular .capa-item {
+  border-radius: 50%;
+}
+
+/* Lista de Músicas */
+.lista-musicas {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-width: 800px;
+}
+
+.item-musica {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background-color: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  gap: 1.5rem;
+  transition: background-color 0.2s ease;
+}
+
+.item-musica:hover {
+  background-color: var(--bg-tertiary);
+}
+
+.numero {
+  color: var(--text-secondary);
+  font-weight: 600;
+  width: 20px;
+}
+
+.detalhes-musica {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.nome-musica {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.artista-musica {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.duracao {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+/* Grid Gêneros */
+.grid-generos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1rem;
+}
+
+.cartao-genero {
+  background: var(--bg-secondary);
+  padding: 1.5rem;
+  text-align: center;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  border: 1px solid var(--border-color);
+  transition: all 0.2s ease;
+}
+
+.cartao-genero:hover {
+  background: var(--bg-tertiary);
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+}
+
+.destaque-principal {
+  height: 400px;
+  position: relative;
+  background-color: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  background: radial-gradient(circle at 30% 30%, rgba(34,197,94,0.18), transparent 55%),
+              radial-gradient(circle at 70% 70%, rgba(59,130,246,0.18), transparent 55%),
+              var(--bg-secondary);
+}
+
+.destaque-principal .imagem-destaque {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  padding: 0;
+  opacity: 1;
+  transition: transform 0.5s ease;
+}
+
+.destaque-lateral {
+  height: 400px;
+  display: grid;
+  grid-template-rows: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.cartao-destaque {
+  height: auto;
+  position: relative;
+  background-color: var(--bg-secondary);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  transition: transform 0.2s ease;
+  background: radial-gradient(circle at 30% 30%, rgba(34,197,94,0.18), transparent 55%),
+              radial-gradient(circle at 70% 70%, rgba(59,130,246,0.18), transparent 55%),
+              var(--bg-secondary);
+}
+
+.cartao-destaque:hover {
+  transform: scale(1.02);
+}
+
+.destaque-principal:hover .imagem-destaque,
+.cartao-destaque:hover .imagem-destaque {
+  transform: scale(1.05);
+}
+
+.legenda-destaque {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 2rem;
+  background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+}
+
+.legenda-destaque h2 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.cartao-destaque .legenda-destaque {
+  padding: 1rem;
+}
+
+.cartao-destaque .legenda-destaque h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+/* Hero: imagens externas (cobrir o card) */
+.destaque-principal::after,
+.cartao-destaque::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.55), rgba(0,0,0,0.15));
+  pointer-events: none;
+}
+
+/* Bestsellers Section */
+.secao-mais-vendidos {
+  margin-top: 4rem;
+}
+
+.cabecalho-secao {
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cabecalho-secao h2 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.grade-mais-vendidos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 2rem;
+}
+
+.cartao-album {
+  background-color: var(--bg-secondary);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+}
+
+.cartao-album:hover {
+  transform: translateY(-8px);
+  background-color: var(--bg-tertiary);
+  border-color: var(--border-color);
+  box-shadow: var(--shadow-lg);
+}
+
+.capa-album {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background-color: var(--bg-tertiary);
+  object-fit: cover;
+}
+
+.info-album {
+  padding: 1.25rem;
+}
+
+.titulo-album {
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.artista-album {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+/* Auth (Login) */
+.pagina-autenticacao {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 200px);
+  padding: 2rem 0;
+}
+
+.cartao-autenticacao {
+  width: 100%;
+  max-width: 420px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xl);
+  padding: 2.5rem;
+  box-shadow: var(--shadow-lg);
+}
+
+.cabecalho-cartao-autenticacao {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.titulo-autenticacao {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.subtitulo-autenticacao {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+}
+
+.formulario-autenticacao {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.grupo-form label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.input-form {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+}
+
+.input-form:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.1);
+}
+
+.linha-autenticacao {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.9rem;
+}
+
+.checkbox-autenticacao {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.checkbox-autenticacao input {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--accent-primary);
+  border-radius: 4px;
+}
+
+.link-autenticacao {
+  color: var(--accent-primary);
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.link-autenticacao:hover {
+  color: var(--accent-secondary);
+  text-decoration: underline;
+}
+
+.botao-enviar-autenticacao {
+  width: 100%;
+  margin-top: 0.5rem;
+  padding: 0.75rem;
+  font-size: 1rem;
+}
+
+.rodape-autenticacao {
+  margin-top: 2rem;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.divisor-autenticacao {
+  height: 1px;
+  background: var(--border-color);
+  margin: 1.5rem 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+
+  .secao-destaque {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+
+  .destaque-principal {
+    height: 220px;
+  }
+
+  .destaque-lateral {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 1fr;
+    height: 110px;
+  }
+
+  .conteudo-cabecalho {
+    flex-direction: column;
+    height: auto;
+    padding: 1rem 0;
+    gap: 1rem;
+  }
+
+  .barra-busca {
+    width: 100%;
+    margin: 0;
+  }
+
+  .lista-nav {
+    gap: 1.5rem;
+    padding: 0.5rem 0;
+  }
+}
+
+/* Data Lists */
+.secao-lista-dados {
+  background-color: var(--bg-secondary);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+  margin-top: 2rem;
+}
+
+.cabecalho-lista {
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+.cabecalho-lista h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.lista-dados {
+  display: flex;
+  flex-direction: column;
+}
+
+.item-lista {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  transition: background-color 0.2s ease;
+}
+
+.item-lista:last-child {
+  border-bottom: none;
+}
+
+.item-lista:hover {
+  background-color: var(--bg-tertiary);
+}
+
+.principal-item-lista {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.avatar-item-lista {
+  width: 40px;
+  height: 40px;
+  background-color: var(--bg-tertiary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+
+.info-item-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.titulo-item-lista {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.meta-item-lista {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.descricao-item-lista {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.25rem;
+}
+
+.acoes-item-lista {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.tag {
+  padding: 0.25rem 0.75rem;
+  background-color: rgba(245, 158, 11, 0.1);
+  color: var(--accent-primary);
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.botao-secundario {
+  padding: 0.4rem 1rem;
+  background-color: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  border-radius: var(--radius-full);
+  font-size: 0.85rem;
+  transition: all 0.2s ease;
+}
+
+.botao-secundario:hover {
+  border-color: var(--text-primary);
+  background-color: var(--bg-tertiary);
+}
+
+/* Genre Cards */
+.grade-generos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.cartao-genero {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+  text-decoration: none;
+  display: block;
+}
+
+.cartao-genero:hover {
+  transform: scale(1.04);
+}
+
+.titulo-genero {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #fff;
+  word-wrap: break-word;
+  position: relative;
+  z-index: 10;
+}
+
+/* Cores estilo Spotify */
+.cartao-genero-cor-1 { background-color: #e13300; } /* Laranja avermelhado */
+.cartao-genero-cor-2 { background-color: #1e3264; } /* Azul escuro */
+.cartao-genero-cor-3 { background-color: #e8115b; } /* Rosa */
+.cartao-genero-cor-4 { background-color: #148a08; } /* Verde */
+.cartao-genero-cor-5 { background-color: #8c1932; } /* Vinho */
+.cartao-genero-cor-6 { background-color: #7358ff; } /* Roxo */
+.cartao-genero-cor-7 { background-color: #503750; } /* Roxo escuro */
+.cartao-genero-cor-8 { background-color: #0d73ec; } /* Azul */
+
+/* Footer */
+.rodape-principal {
+  border-top: 1px solid var(--border-color);
+  padding: 2rem 0;
+  margin-top: auto;
+  background-color: var(--bg-primary);
+}
+
+.conteudo-rodape {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.redes-sociais {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.link-social {
+  color: var(--text-secondary);
+  transition: color 0.2s ease;
+}
+
+.link-social:hover {
+  color: var(--accent-primary);
+}

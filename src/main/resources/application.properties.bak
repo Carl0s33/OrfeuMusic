@@ -1,0 +1,36 @@
+spring.application.name=orfeu-music
+
+# Configura��es de banco (ajuste conforme seu ambiente)
+spring.datasource.url=jdbc:postgresql://localhost:5432/orfeumusic
+spring.datasource.username=postgres
+spring.datasource.password=ifrn
+spring.jpa.hibernate.ddl-auto=validate
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+
+spring.flyway.enabled=true
+spring.flyway.locations=classpath:db/migration
+
+
+# Configurações do JWT
+app.jwtSecret=orfeuMusicSecretKey12345678901234567890123456789012
+app.jwtExpirationMs=86400000  # 24 horas em milissegundos
+
+# Configurações de segurança
+spring.security.user.name=admin
+spring.security.user.password=admin123
+spring.security.user.roles=ADMIN
+
+# Configurações do CORS
+cors.allowed-origins=*
+cors.allowed-methods=GET,POST,PUT,DELETE,OPTIONS
+cors.allowed-headers=*
+
+# Configurações adicionais do JPA
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation=true
+spring.jpa.properties.hibernate.temp.use_jdbc_metadata_defaults=false
+
+# Configurações de logging para depuração
+logging.level.org.springframework.security=DEBUG
+logging.level.br.orfeu.music=DEBUG

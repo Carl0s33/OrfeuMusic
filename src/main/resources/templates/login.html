@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::#conteudo-login}, 'Login - Orfeu Music')}">
+
+<body>
+<div id="conteudo-login">
+
+    <div class="cabecalho-secao">
+        <h2>Entrar</h2>
+    </div>
+
+    <div class="pagina-autenticacao">
+        <div class="cartao-autenticacao">
+            <div class="cabecalho-cartao-autenticacao">
+                <h3 class="titulo-autenticacao">Acesse sua conta</h3>
+                <p class="subtitulo-autenticacao">Entre para acompanhar contribuições, revisões e histórico.</p>
+            </div>
+
+            <form id="loginForm" class="formulario-autenticacao">
+                <div id="loginError" class="alert alert-danger" style="display: none; color: #ff4444; margin-bottom: 1rem;"></div>
+                
+                <div class="grupo-form">
+                    <label for="username">E-mail</label>
+                    <input id="username" name="username" type="email" autocomplete="username" required class="input-form" />
+                </div>
+
+                <div class="grupo-form">
+                    <label for="password">Senha</label>
+                    <div style="position: relative;">
+                        <input id="password" name="password" type="password" autocomplete="current-password" required class="input-form" style="padding-right: 2.5rem;" />
+                        <button type="button" id="togglePassword" style="position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: var(--text-secondary);">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="linha-autenticacao">
+                    <label class="checkbox-autenticacao">
+                        <input type="checkbox" name="lembrar" />
+                        <span>Lembrar de mim</span>
+                    </label>
+                    <a href="#" class="link-autenticacao">Esqueci minha senha</a>
+                </div>
+
+                <div class="acoes-form">
+                    <button type="submit" class="botao-primario botao-enviar-autenticacao">Entrar</button>
+                </div>
+            </form>
+
+            <script>
+                const togglePassword = document.getElementById('togglePassword');
+                const passwordInput = document.getElementById('password');
+
+                togglePassword.addEventListener('click', function() {
+                    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                    passwordInput.setAttribute('type', type);
+
+                    if (type === 'text') {
+                        this.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye-off"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>';
+                    } else {
+                        this.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>';
+                    }
+                });
+
+                document.getElementById('loginForm').addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const username = document.getElementById('username').value;
+                    const password = document.getElementById('password').value;
+                    const errorDiv = document.getElementById('loginError');
+                    
+                    errorDiv.style.display = 'none';
+                    
+                    fetch('/api/auth/login', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ username, password })
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            return response.json();
+                        } else {
+                            throw new Error('E-mail ou senha incorretos');
+                        }
+                    })
+                    .then(data => {
+                        localStorage.setItem('token', data.token);
+                        localStorage.setItem('user', JSON.stringify({
+                            id: data.id,
+                            email: data.email,
+                            nome: data.nome,
+                            fotoUrl: data.fotoUrl,
+                            roles: data.permissoes
+                        }));
+                        window.location.href = '/';
+                    })
+                    .catch(error => {
+                        errorDiv.textContent = error.message;
+                        errorDiv.style.display = 'block';
+                    });
+                });
+            </script>
+
+            <div class="rodape-autenticacao">
+                <div>Visitantes podem navegar e pesquisar o catálogo sem login.</div>
+                <div>Colaboradores enviam contribuições para revisão de Editores.</div>
+                <div class="divisor-autenticacao"></div>
+                <div>Não tem conta? <a th:href="@{/cadastro}" class="link-autenticacao">Criar conta</a></div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+
+</html>

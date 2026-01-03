@@ -1,0 +1,165 @@
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
+      th:fragment="layout(conteudo, tituloPagina)">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="${tituloPagina} ?: 'Orfeu Music'"></title>
+    <link rel="stylesheet" th:href="@{/css/globals.css}" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+</head>
+<body class="bg-black text-gray-300 font-sans">
+
+<div id="container-app">
+    <!-- Cabeçalho Superior -->
+    <header class="cabecalho-principal">
+        <div class="conteudo-cabecalho">
+            <div class="logo">
+                <a th:href="@{/}" class="link-logo">
+                    <img th:src="@{/images/logo.png}" alt="Orfeu Music Logo" class="imagem-logo" />
+                    <span class="texto-logo">ORFEU MUSIC</span>
+                </a>
+            </div>
+
+            <div class="barra-busca">
+                <form action="#" method="get" class="relative">
+                    <input
+                        type="text"
+                        class="input-busca"
+                        placeholder="Buscar artistas, álbuns e mais..."
+                        aria-label="Buscar"
+                    />
+                    <button type="submit" class="botao-busca">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    </button>
+                </form>
+            </div>
+
+            <div id="authSection" class="acoes-usuario">
+                <a th:href="@{/login}" class="link-nav">Entrar</a>
+                <a th:href="@{/cadastro}" class="botao-primario">Cadastrar</a>
+            </div>
+        </div>
+    </header>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const token = localStorage.getItem('token');
+            const userStr = localStorage.getItem('user');
+            const authSection = document.getElementById('authSection');
+
+            if (token && userStr) {
+                const user = JSON.parse(userStr);
+
+                let avatarHtml = '';
+                if (user.fotoUrl) {
+                    avatarHtml = `<img src="${user.fotoUrl}" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover;">`;
+                } else {
+                    avatarHtml = `<span style="font-size: 1.2rem;">👤</span>`;
+                }
+
+                authSection.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 0.75rem; margin-right: 1rem;">
+                        <div style="width: 32px; height: 32px; background-color: var(--bg-tertiary); border-radius: 50%; display: flex; align-items: center; justify-content: center; overflow: hidden; cursor: pointer;" title="Alterar avatar">
+                            ${avatarHtml}
+                        </div>
+                        <span class="text-sm" style="color: #9ca3af;">Olá, ${user.nome || user.email}</span>
+                    </div>
+                    <button id="logoutBtn" class="link-nav" style="background: none; border: none; cursor: pointer; color: inherit; font: inherit; padding: 0;">Sair</button>
+                `;
+
+                document.getElementById('logoutBtn').addEventListener('click', function() {
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('user');
+                    window.location.href = '/login';
+                });
+
+                // Show Contribuir link if user has permission
+                if (user.roles && (user.roles.includes('ROLE_ADMIN') || user.roles.includes('ROLE_EDITOR') || user.roles.includes('ROLE_COLABORADOR'))) {
+                    // Manter visível conforme solicitado no snippet
+                } else {
+                    const navContribuir = document.getElementById('nav-contribuir');
+                    if (navContribuir) {
+                        navContribuir.style.display = 'none';
+                    }
+                }
+
+                // Show Revisoes link if user is Admin or Editor
+                if (user.roles && (user.roles.includes('ROLE_ADMIN') || user.roles.includes('ROLE_EDITOR'))) {
+                    // Manter visível conforme solicitado no snippet
+                } else {
+                    const navRevisoes = document.getElementById('nav-revisoes');
+                    if (navRevisoes) {
+                        navRevisoes.style.display = 'none';
+                    }
+                }
+            }
+        });
+
+        // Interceptor simples para adicionar o token nas requisições fetch
+        const originalFetch = window.fetch;
+        window.fetch = function() {
+            let [resource, config] = arguments;
+            if (config === undefined) {
+                config = {};
+            }
+            if (config.headers === undefined) {
+                config.headers = {};
+            }
+            
+            const token = localStorage.getItem('token');
+            if (token) {
+                config.headers['Authorization'] = 'Bearer ' + token;
+            }
+            
+            return originalFetch(resource, config).then(response => {
+                if (response.status === 401 && !resource.includes('/api/auth/login')) {
+                    // Token expirado ou inválido (evita loop no login)
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('user');
+                }
+                return response;
+            });
+        };
+    </script>
+
+    <nav class="nav-principal">
+        <ul class="lista-nav">
+            <li><a href="/" class="link-nav active">Início</a></li>
+            <li><a href="/artistas" class="link-nav">Artistas</a></li>
+            <li><a href="/lancamentos" class="link-nav">Lançamentos</a></li>
+            <li><a href="/selos" class="link-nav">Selos</a></li>
+            <li><a href="/faixas" class="link-nav">Faixas</a></li>
+            <li><a href="/generos" class="link-nav">Gêneros</a></li>
+            <li><a href="/historico" class="link-nav">Histórico</a></li>
+            <li id="nav-contribuir" style="display: block;">
+                <a href="/contribuir" class="link-nav">Contribuir</a>
+            </li>
+            <li id="nav-revisoes" style="display: block;">
+                <a href="/admin/revisoes" class="link-nav">Revisões</a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Conteúdo Principal -->
+    <main class="conteudo-principal">
+        <div th:replace="${conteudo}">
+            <!-- O conteúdo da página será inserido aqui -->
+        </div>
+    </main>
+
+    <!-- Rodapé -->
+    <footer class="rodape-principal">
+        <div class="conteudo-rodape">
+            <div class="redes-sociais">
+                <a href="#" class="link-social">Instagram</a>
+                <a href="#" class="link-social">Twitter</a>
+                <a href="#" class="link-social">Facebook</a>
+            </div>
+            <p>&copy; 2026 Orfeu Music. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+</div>
+
+</body>
+</html>

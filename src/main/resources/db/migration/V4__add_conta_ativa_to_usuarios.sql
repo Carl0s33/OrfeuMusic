@@ -1,0 +1,3 @@
+ALTER TABLE usuarios
+    ADD COLUMN IF NOT EXISTS conta_ativa BOOLEAN DEFAULT TRUE;
+

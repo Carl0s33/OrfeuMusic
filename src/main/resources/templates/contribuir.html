@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::#conteudo-contribuir}, 'Contribuir - Orfeu Music')}">
+
+<body>
+<div id="conteudo-contribuir">
+
+    <div class="cabecalho-secao">
+        <h2>Contribuir com o Catálogo</h2>
+        <p style="color: var(--text-secondary); margin-top: 0.5rem;">Adicione informações sobre artistas, álbuns e faixas. Sua contribuição será revisada por um editor.</p>
+    </div>
+
+    <div class="secao-formulario" style="background-color: var(--bg-secondary); padding: 2rem; border-radius: var(--radius-xl); border: 1px solid var(--border-color);">
+        <form class="formulario-contribuicao">
+
+            <h3 style="color: var(--text-primary); margin-bottom: 1.5rem; font-size: 1.2rem;">Informações do Artista</h3>
+
+            <div class="linha-form" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                <div class="grupo-form">
+                    <label for="nomeArtista">Nome Artístico</label>
+                    <input type="text" id="nomeArtista" name="nomeArtista" class="input-form" required>
+                </div>
+                <div class="grupo-form">
+                    <label for="nomeVerdadeiro">Nome Verdadeiro</label>
+                    <input type="text" id="nomeVerdadeiro" name="nomeVerdadeiro" class="input-form">
+                </div>
+            </div>
+
+            <div class="linha-form" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1rem;">
+                <div class="grupo-form">
+                    <label for="dataLancamento">Data de Lançamento</label>
+                    <input type="date" id="dataLancamento" name="dataLancamento" class="input-form">
+                </div>
+                <div class="grupo-form">
+                    <label for="gravadora">Selo / Gravadora</label>
+                    <input type="text" id="gravadora" name="gravadora" class="input-form">
+                </div>
+            </div>
+
+            <div class="grupo-form" style="margin-top: 1rem;">
+                <label>Capa do Álbum</label>
+                <div class="upload-container" id="uploadCapa" style="display: flex; align-items: center; gap: 1rem;">
+
+            <div class="grupo-form" style="margin-top: 1rem;">
+                <label>Foto do Artista</label>
+                <div class="upload-container" id="uploadArtista" style="display: flex; align-items: center; gap: 1rem;">
+                    <div class="preview-box" style="width: 100px; height: 100px; background: var(--bg-tertiary); border-radius: 50%; display: flex; align-items: center; justify-content: center; overflow: hidden; cursor: pointer; border: 2px dashed var(--border-color);">
+                        <span style="font-size: 2rem;">📷</span>
+                        <img src="" style="width: 100%; height: 100%; object-fit: cover; display: none;">
+                    </div>
+                    <button type="button" class="botao-secundario btn-upload">Escolher Foto</button>
+                    <input type="file" accept="image/*" style="display: none;">
+                    <input type="hidden" id="fotoArtista" name="fotoArtista">
+                </div>
+            </div>
+
+            <div class="grupo-form" style="margin-top: 1rem;">
+                <label for="biografia">Biografia</label>
+                <textarea id="biografia" name="biografia" class="input-form" rows="4" style="resize: vertical;"></textarea>
+            </div>
+
+            <h3 style="color: var(--text-primary); margin: 2rem 0 1.5rem; font-size: 1.2rem;">Informações do Álbum</h3>
+
+            <div class="linha-form" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                <div class="grupo-form">
+                    <label for="nomeAlbum">Título do Álbum</label>
+                    <input type="text" id="nomeAlbum" name="nomeAlbum" class="input-form" required>
+                </div>
+                <div class="grupo-form">
+                    <label for="tipoAlbum">Tipo</label>
+                    <select id="tipoAlbum" name="tipoAlbum" class="input-form" style="background-color: var(--bg-primary); color: var(--text-primary);">
+                        <option value="ALBUM">Álbum</option>
+                        <option value="EP">EP</option>
+                        <option value="SINGLE">Single</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="linha-form" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1rem;">
+                <div class="grupo-form">
+                    <label for="dataLancamento">Data de Lançamento</label>
+                    <input type="date" id="dataLancamento" name="dataLancamento" class="input-form">
+                </div>
+                <div class="grupo-form">
+                    <label>Capa do Álbum</label>
+                    <div class="upload-container" id="uploadCapa" style="display: flex; align-items: center; gap: 1rem;">
+                        <div class="preview-box" style="width: 100px; height: 100px; background: var(--bg-tertiary); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; overflow: hidden; cursor: pointer; border: 2px dashed var(--border-color);">
+                            <span style="font-size: 2rem;">💿</span>
+                            <img src="" style="width: 100%; height: 100%; object-fit: cover; display: none;">
+                        </div>
+                        <button type="button" class="botao-secundario btn-upload">Escolher Capa</button>
+                        <input type="file" accept="image/*" style="display: none;">
+                        <input type="hidden" id="urlCapa" name="urlCapa">
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="color: var(--text-primary); margin: 2rem 0 1rem; font-size: 1.2rem; display: flex; justify-content: space-between; align-items: center;">
+                Faixas do Álbum
+                <button type="button" id="btnAdicionarFaixa" class="botao-secundario" style="font-size: 0.8rem;">+ Adicionar Faixa</button>
+            </h3>
+
+            <div id="listaFaixas" style="display: flex; flex-direction: column; gap: 1rem;">
+                <!-- Faixas serão adicionadas aqui via JS -->
+                <div class="item-faixa" style="background: var(--bg-tertiary); padding: 1rem; border-radius: var(--radius-md);">
+                    <div style="display: grid; grid-template-columns: 60px 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                        <div class="grupo-form" style="margin-bottom: 0;">
+                            <label style="font-size: 0.8rem;">Nº</label>
+                            <input type="number" name="faixas[0].numero" class="input-form" value="1">
+                        </div>
+                        <div class="grupo-form" style="margin-bottom: 0;">
+                            <label style="font-size: 0.8rem;">Nome da Música</label>
+                            <input type="text" name="faixas[0].nome" class="input-form" required>
+                        </div>
+                        <div class="grupo-form" style="margin-bottom: 0;">
+                            <label style="font-size: 0.8rem;">Duração</label>
+                            <input type="text" name="faixas[0].duracao" class="input-form" placeholder="0:00" required>
+                        </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+                        <div class="grupo-form" style="margin-bottom: 0;">
+                            <label style="font-size: 0.8rem;">Compositores</label>
+                            <input type="text" name="faixas[0].compositores" class="input-form" placeholder="Separados por vírgula">
+                        </div>
+                        <div class="grupo-form" style="margin-bottom: 0;">
+                            <label style="font-size: 0.8rem;">Produtores</label>
+                            <input type="text" name="faixas[0].produtores" class="input-form" placeholder="Separados por vírgula">
+                        </div>
+                        <div class="grupo-form" style="margin-bottom: 0;">
+                            <label style="font-size: 0.8rem;">Participações (Feat)</label>
+                            <input type="text" name="faixas[0].creditos" class="input-form" placeholder="Artistas convidados">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="acoes-form" style="margin-top: 2rem; display: flex; justify-content: flex-end;">
+                <button type="submit" class="botao-primario">Enviar Contribuição</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Verificar autenticação e permissões
+            const userStr = localStorage.getItem('user');
+            if (!userStr) {
+                window.location.href = '/login';
+                return;
+            }
+
+            const user = JSON.parse(userStr);
+            const hasPermission = user.roles && (
+                user.roles.includes('ROLE_ADMIN') ||
+                user.roles.includes('ROLE_EDITOR') ||
+                user.roles.includes('ROLE_COLABORADOR')
+            );
+
+            if (!hasPermission) {
+                alert('Você não tem permissão para acessar esta página.');
+                window.location.href = '/';
+                return;
+            }
+
+            // Upload Logic
+            function setupUpload(containerId) {
+                const container = document.getElementById(containerId);
+                const fileInput = container.querySelector('input[type="file"]');
+                const hiddenInput = container.querySelector('input[type="hidden"]');
+                const previewBox = container.querySelector('.preview-box');
+                const img = previewBox.querySelector('img');
+                const placeholder = previewBox.querySelector('span');
+                const btn = container.querySelector('.btn-upload');
+
+                function triggerUpload() {
+                    fileInput.click();
+                }
+
+                btn.addEventListener('click', triggerUpload);
+                previewBox.addEventListener('click', triggerUpload);
+
+                fileInput.addEventListener('change', function() {
+                    const file = this.files[0];
+                    if (file) {
+                        // Preview
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            img.src = e.target.result;
+                            img.style.display = 'block';
+                            placeholder.style.display = 'none';
+                        }
+                        reader.readAsDataURL(file);
+
+                        // Upload
+                        const formData = new FormData();
+                        formData.append('file', file);
+
+                        fetch('/api/upload/avatar', {
+                            method: 'POST',
+                            body: formData
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.url) {
+                                hiddenInput.value = data.url;
+                            } else {
+                                alert('Erro ao fazer upload');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Erro:', error);
+                            alert('Erro ao fazer upload');
+                        });
+                    }
+                });
+            }
+
+            setupUpload('uploadArtista');
+            setupUpload('uploadCapa');
+
+            const btnAdicionar = document.getElementById('btnAdicionarFaixa');
+            const listaFaixas = document.getElementById('listaFaixas');
+            let contadorFaixas = 1;
+
+            btnAdicionar.addEventListener('click', function() {
+                const div = document.createElement('div');
+                div.className = 'item-faixa';
+                div.style.cssText = 'background: var(--bg-tertiary); padding: 1rem; border-radius: var(--radius-md); position: relative;';
+
+                div.innerHTML = `
+                    <button type="button" class="botao-secundario remover-faixa" style="position: absolute; top: 0.5rem; right: 0.5rem; color: #ef4444; border-color: #ef4444; padding: 0.2rem 0.6rem; font-size: 0.7rem;">X</button>
+                    <div style="display: grid; grid-template-columns: 60px 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                        <div class="grupo-form" style="margin-bottom: 0;">
+                            <label style="font-size: 0.8rem;">Nº</label>
+                            <input type="number" name="faixas[${contadorFaixas}].numero" class="input-form" value="${contadorFaixas + 1}">
+                        </div>
+                        <div class="grupo-form" style="margin-bottom: 0;">
+                            <label style="font-size: 0.8rem;">Nome da Música</label>
+                            <input type="text" name="faixas[${contadorFaixas}].nome" class="input-form" required>
+                        </div>
+                        <div class="grupo-form" style="margin-bottom: 0;">
+                            <label style="font-size: 0.8rem;">Duração</label>
+                            <input type="text" name="faixas[${contadorFaixas}].duracao" class="input-form" placeholder="0:00" required>
+                        </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+                        <div class="grupo-form" style="margin-bottom: 0;">
+                            <label style="font-size: 0.8rem;">Compositores</label>
+                            <input type="text" name="faixas[${contadorFaixas}].compositores" class="input-form" placeholder="Separados por vírgula">
+                        </div>
+                        <div class="grupo-form" style="margin-bottom: 0;">
+                            <label style="font-size: 0.8rem;">Produtores</label>
+                            <input type="text" name="faixas[${contadorFaixas}].produtores" class="input-form" placeholder="Separados por vírgula">
+                        </div>
+                        <div class="grupo-form" style="margin-bottom: 0;">
+                            <label style="font-size: 0.8rem;">Participações (Feat)</label>
+                            <input type="text" name="faixas[${contadorFaixas}].creditos" class="input-form" placeholder="Artistas convidados">
+                        </div>
+                    </div>
+                `;
+
+                listaFaixas.appendChild(div);
+                contadorFaixas++;
+
+                // Adicionar evento de remover
+                div.querySelector('.remover-faixa').addEventListener('click', function() {
+                    div.remove();
+                });
+            });
+
+            // Form Submission
+            const form = document.querySelector('.formulario-contribuicao');
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                const formData = new FormData(form);
+                const data = {
+                    nomeArtista: formData.get('nomeArtista'),
+                    nomeVerdadeiro: formData.get('nomeVerdadeiro'),
+                    dataNascimento: formData.get('dataNascimento'),
+                    paisOrigem: formData.get('paisOrigem'),
+                    fotoArtista: formData.get('fotoArtista'),
+                    biografia: formData.get('biografia'),
+
+                    nomeAlbum: formData.get('nomeAlbum'),
+                    tipoAlbum: formData.get('tipoAlbum'),
+                    dataLancamento: formData.get('dataLancamento'),
+                    gravadora: formData.get('gravadora'),
+                    urlCapa: formData.get('urlCapa'),
+
+                    faixas: []
+                };
+
+                // Collect tracks
+                const trackElements = document.querySelectorAll('.item-faixa');
+                trackElements.forEach((el, index) => {
+                    const numero = el.querySelector(`input[name*=".numero"]`).value;
+                    const nome = el.querySelector(`input[name*=".nome"]`).value;
+                    const duracao = el.querySelector(`input[name*=".duracao"]`).value;
+                    const compositores = el.querySelector(`input[name*=".compositores"]`).value;
+                    const produtores = el.querySelector(`input[name*=".produtores"]`).value;
+                    const creditos = el.querySelector(`input[name*=".creditos"]`).value; // Feat
+
+                    data.faixas.push({
+                        numero: parseInt(numero),
+                        nome: nome,
+                        duracao: duracao,
+                        compositores: compositores,
+                        produtores: produtores,
+                        creditos: creditos
+                    });
+                });
+
+                fetch('/api/contribuicoes', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + localStorage.getItem('token')
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => {
+                    if (response.ok) {
+                        alert('Contribuição enviada com sucesso!');
+                        window.location.href = '/';
+                    } else {
+                        return response.text().then(text => { throw new Error(text) });
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                    alert('Erro ao enviar contribuição: ' + error.message);
+                });
+            });
+        });
+    </script>
+
+</div>
+</body>
+</html>
+

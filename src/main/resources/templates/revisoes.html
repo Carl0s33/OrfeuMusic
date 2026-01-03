@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::#conteudo-revisoes}, 'Revisão de Contribuições - Orfeu Music')}">
+
+<body>
+<div id="conteudo-revisoes">
+
+    <div class="cabecalho-secao">
+        <h2>Revisão de Contribuições</h2>
+        <p style="color: var(--text-secondary); margin-top: 0.5rem;">Aprove ou rejeite as contribuições pendentes.</p>
+    </div>
+
+    <div class="secao-revisao" style="margin-top: 2rem;">
+        <h3 style="color: var(--text-primary); margin-bottom: 1rem;">Artistas Pendentes</h3>
+        <div th:if="${#lists.isEmpty(artistas)}" style="color: var(--text-secondary);">Nenhum artista pendente.</div>
+        <div class="grid-cards" th:unless="${#lists.isEmpty(artistas)}">
+            <div th:each="artista : ${artistas}" class="card-revisao" style="background: var(--bg-secondary); padding: 1.5rem; border-radius: var(--radius-lg); border: 1px solid var(--border-color);">
+                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                    <img th:if="${artista.fotoUrl}" th:src="${artista.fotoUrl}" style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover;">
+                    <div>
+                        <h4 th:text="${artista.nome}" style="color: var(--text-primary); margin: 0;">Nome Artista</h4>
+                        <small th:text="${artista.nomeVerdadeiro}" style="color: var(--text-secondary);">Nome Real</small>
+                    </div>
+                </div>
+                <p th:text="${artista.biografia}" style="color: var(--text-secondary); font-size: 0.9rem; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">Biografia...</p>
+                <div class="acoes-revisao" style="display: flex; gap: 1rem; margin-top: 1rem;">
+                    <button th:onclick="'aprovar(\'artista\', ' + ${artista.id} + ')'" class="botao-primario" style="flex: 1; background-color: #22c55e; border-color: #22c55e;">Aprovar</button>
+                    <button th:onclick="'rejeitar(\'artista\', ' + ${artista.id} + ')'" class="botao-secundario" style="flex: 1; color: #ef4444; border-color: #ef4444;">Rejeitar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="secao-revisao" style="margin-top: 3rem;">
+        <h3 style="color: var(--text-primary); margin-bottom: 1rem;">Álbuns Pendentes</h3>
+        <div th:if="${#lists.isEmpty(albuns)}" style="color: var(--text-secondary);">Nenhum álbum pendente.</div>
+        <div class="grid-cards" th:unless="${#lists.isEmpty(albuns)}">
+            <div th:each="album : ${albuns}" class="card-revisao" style="background: var(--bg-secondary); padding: 1.5rem; border-radius: var(--radius-lg); border: 1px solid var(--border-color);">
+                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                    <img th:if="${album.capaUrl}" th:src="${album.capaUrl}" style="width: 60px; height: 60px; border-radius: var(--radius-md); object-fit: cover;">
+                    <div>
+                        <h4 th:text="${album.titulo}" style="color: var(--text-primary); margin: 0;">Título Álbum</h4>
+                        <small th:text="${album.artista.nome}" style="color: var(--text-secondary);">Artista</small>
+                    </div>
+                </div>
+                <div style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem;">
+                    <div>Lançamento: <span th:text="${album.dataLancamento}">Data</span></div>
+                    <div>Tipo: <span th:text="${album.tipo}">Tipo</span></div>
+                </div>
+                <div class="acoes-revisao" style="display: flex; gap: 1rem; margin-top: 1rem;">
+                    <button th:onclick="'aprovar(\'album\', ' + ${album.id} + ')'" class="botao-primario" style="flex: 1; background-color: #22c55e; border-color: #22c55e;">Aprovar</button>
+                    <button th:onclick="'rejeitar(\'album\', ' + ${album.id} + ')'" class="botao-secundario" style="flex: 1; color: #ef4444; border-color: #ef4444;">Rejeitar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function aprovar(tipo, id) {
+            if (!confirm('Tem certeza que deseja aprovar?')) return;
+            enviarAcao(tipo, id, 'aprovar');
+        }
+
+        function rejeitar(tipo, id) {
+            if (!confirm('Tem certeza que deseja rejeitar?')) return;
+            enviarAcao(tipo, id, 'rejeitar');
+        }
+
+        function enviarAcao(tipo, id, acao) {
+            fetch(`/api/admin/revisoes/${tipo}/${id}/${acao}`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('Ação realizada com sucesso!');
+                    window.location.reload();
+                } else {
+                    alert('Erro ao realizar ação.');
+                }
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+                alert('Erro ao realizar ação.');
+            });
+        }
+    </script>
+
+</div>
+</body>
+</html>
+

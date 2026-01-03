@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::#conteudo-index}, 'Início - Orfeu Music')}">
+
+<body>
+<div id="conteudo-index">
+
+    <!-- Hero Section -->
+    <section class="secao-destaque">
+        <div class="destaque-principal">
+            <img class="imagem-destaque" src="https://images.unsplash.com/photo-1511379938547-c1f69419868d?auto=format&fit=crop&w=1600&q=80" alt="Estúdio de música" loading="lazy" referrerpolicy="no-referrer">
+        </div>
+        <div class="destaque-lateral">
+            <div class="cartao-destaque">
+                <img class="imagem-destaque" src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=900&q=80" alt="Fones de ouvido" loading="lazy" referrerpolicy="no-referrer">
+            </div>
+            <div class="cartao-destaque">
+                <img class="imagem-destaque" src="https://images.unsplash.com/photo-1459749411175-04bf5292ceea?auto=format&fit=crop&w=900&q=80" alt="Show ao vivo" loading="lazy" referrerpolicy="no-referrer">
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção de Exploração (Estilo Discogs) -->
+    <section class="secao-explorar">
+        <!-- Álbuns -->
+        <div class="bloco-explorar">
+            <h3 class="titulo-secao-explorar">Álbuns em Destaque</h3>
+            <div class="grid-discogs">
+                <div th:each="album : ${bestSellers}" class="item-discogs">
+                    <div class="capa-item">
+                        <img th:src="${album.urlCapa}" th:alt="${album.titulo}" loading="lazy">
+                    </div>
+                    <div class="info-item">
+                        <a href="#" class="titulo-item" th:text="${album.titulo}">Título do Álbum</a>
+                        <a href="#" class="subtitulo-item" th:text="${album.artista}">Nome do Artista</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Artistas -->
+        <div class="bloco-explorar">
+            <h3 class="titulo-secao-explorar">Artistas Populares</h3>
+            <div class="grid-discogs">
+                <!-- Exemplos Estáticos para Artistas -->
+                <div class="item-discogs artista-circular">
+                    <div class="capa-item">
+                        <img src="https://images.unsplash.com/photo-1520529277867-dbf8c5e0b340?auto=format&fit=crop&w=300&q=80" alt="Artista">
+                    </div>
+                    <div class="info-item text-center">
+                        <a href="#" class="titulo-item">Gilberto Gil</a>
+                    </div>
+                </div>
+                <div class="item-discogs artista-circular">
+                    <div class="capa-item">
+                        <img src="https://images.unsplash.com/photo-1493225255756-d9584f8606e9?auto=format&fit=crop&w=300&q=80" alt="Artista">
+                    </div>
+                    <div class="info-item text-center">
+                        <a href="#" class="titulo-item">Caetano Veloso</a>
+                    </div>
+                </div>
+                <div class="item-discogs artista-circular">
+                    <div class="capa-item">
+                        <img src="https://images.unsplash.com/photo-1534333237741-9100d33f10d4?auto=format&fit=crop&w=300&q=80" alt="Artista">
+                    </div>
+                    <div class="info-item text-center">
+                        <a href="#" class="titulo-item">Gal Costa</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Músicas -->
+        <div class="bloco-explorar">
+            <h3 class="titulo-secao-explorar">Músicas em Alta</h3>
+            <div class="lista-musicas">
+                <div class="item-musica">
+                    <span class="numero">01</span>
+                    <div class="detalhes-musica">
+                        <span class="nome-musica">Águas de Março</span>
+                        <span class="artista-musica">Elis Regina & Tom Jobim</span>
+                    </div>
+                    <span class="duracao">3:32</span>
+                </div>
+                <div class="item-musica">
+                    <span class="numero">02</span>
+                    <div class="detalhes-musica">
+                        <span class="nome-musica">Mas que Nada</span>
+                        <span class="artista-musica">Jorge Ben Jor</span>
+                    </div>
+                    <span class="duracao">3:02</span>
+                </div>
+                <div class="item-musica">
+                    <span class="numero">03</span>
+                    <div class="detalhes-musica">
+                        <span class="nome-musica">Garota de Ipanema</span>
+                        <span class="artista-musica">Stan Getz & João Gilberto</span>
+                    </div>
+                    <span class="duracao">5:24</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gêneros -->
+        <div class="bloco-explorar">
+            <h3 class="titulo-secao-explorar">Explorar Gêneros</h3>
+            <div class="grid-generos">
+                <a href="#" class="cartao-genero">Samba</a>
+                <a href="#" class="cartao-genero">Bossa Nova</a>
+                <a href="#" class="cartao-genero">MPB</a>
+                <a href="#" class="cartao-genero">Rock Brasil</a>
+                <a href="#" class="cartao-genero">Tropicalia</a>
+                <a href="#" class="cartao-genero">Choro</a>
+            </div>
+        </div>
+    </section>
+
+</div>
+</body>
+
+</html>

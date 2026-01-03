@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::#conteudo-generos}, 'Gêneros - Orfeu Music')}">
+
+<body>
+<div id="conteudo-generos">
+
+    <div class="cabecalho-secao">
+        <h2>Gêneros Musicais</h2>
+    </div>
+
+
+    <!-- Lista de Gêneros -->
+    <div class="grade-generos" th:if="${not #lists.isEmpty(generos)}">
+        <a href="#" class="cartao-genero" th:each="g, iterStat : ${generos}"
+           th:classappend="'cartao-genero-cor-' + ${(iterStat.index % 8) + 1}">
+            <h3 class="titulo-genero" th:text="${g.nome}">Nome do Gênero</h3>
+        </a>
+    </div>
+
+    <div class="mensagem-lista-vazia" th:if="${#lists.isEmpty(generos)}">
+        <p>Nenhum gênero cadastrado.</p>
+    </div>
+
+</div>
+</body>
+
+</html>

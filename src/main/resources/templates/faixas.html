@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{layout :: layout(~{::#conteudo-faixas}, 'Faixas - Orfeu Music')}">
+
+<body>
+<div id="conteudo-faixas">
+
+    <div class="cabecalho-secao">
+        <h2>Faixas</h2>
+    </div>
+
+    <div class="secao-lista-dados">
+        <div class="lista-dados">
+
+            <!-- Cards de faixas (só mostra se tiver faixas) -->
+            <div class="item-lista cartao-faixa"
+                 th:each="faixa : ${faixas}"
+                 th:if="${not #lists.isEmpty(faixas)}">
+                <div class="principal-item-lista">
+                    <div class="info-item-lista">
+                        <p class="titulo-item-lista" th:text="${faixa.titulo}">Título da faixa</p>
+                        <p class="meta-item-lista">
+                            <span th:text="${faixa.duracao}">0:00</span>
+                            <span>•</span>
+                            <span th:text="'Álbum: ' + ${faixa.album}">Álbum: Exemplo</span>
+                        </p>
+                        <p class="creditos-item-lista" th:text="${faixa.creditos}">Créditos da faixa</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mensagem quando não há faixas -->
+            <div class="mensagem-lista-vazia" th:if="${#lists.isEmpty(faixas)}">
+                <p>Nenhuma faixa cadastrada ainda. Adicione a primeira faixa para vê-la aqui.</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+
+</html>
